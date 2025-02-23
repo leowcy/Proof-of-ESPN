@@ -7,3 +7,6 @@
 [submodule "src/contract/lib/protocol"]
 	path = src/contract/lib/protocol
 	url = https://github.com/UMAprotocol/protocol
+[submodule "src/contracts/lib/forge-std"]
+	path = src/contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
