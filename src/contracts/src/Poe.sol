@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@uma/core/contracts/optimistic-oracle-v3/interfaces/OptimisticOracleV3Interface.sol";
 
-contract OddsVerifier {
+contract Poe {
     OptimisticOracleV3Interface public umaOracle;
     IERC20 public rewardToken;
     address public owner;
