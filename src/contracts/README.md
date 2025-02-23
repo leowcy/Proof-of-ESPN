@@ -51,6 +51,11 @@ $ anvil
 $ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
 ```
 
+### Verify contract
+```
+forge verify-contract --chain sepolia --etherscan-api-key $ETHERSCAN_KEY CONTRACT_ADD <PATH>:<NAME>
+```
+
 ### Cast
 
 ```shell
