@@ -7,15 +7,15 @@ import "./mock/MockERC20.sol";
 import "./mock/MockUMAOracle.sol";
 
 contract PoeTest is Test {
-    Poe public oddsVerifier;
+    Poe public poe;
     OptimisticOracleV3Interface public umaOracle;
     IERC20 public rewardToken;
     address public user;
-    
+
     function setUp() public {
         umaOracle = OptimisticOracleV3Interface(address(new MockUMAOracle()));
         rewardToken = IERC20(address(new MockERC20()));
-        oddsVerifier = new Poe(address(umaOracle), address(rewardToken));
+        poe = new Poe(address(umaOracle), address(rewardToken));
         user = address(1);
     }
 
@@ -25,11 +25,12 @@ contract PoeTest is Test {
         uint256 threshold = 200;
         uint256 timestamp = block.timestamp;
 
-        oddsVerifier.submitClaim(team, threshold, timestamp);
-        
+        poe.submitClaim(team, threshold, timestamp);
+
         bytes32 claimId = keccak256(abi.encode(user, team, threshold, timestamp));
-        (address claimant, , uint256 storedThreshold, uint256 storedTimestamp, bool resolved, , bytes32 assertionId) = oddsVerifier.claims(claimId);
-        
+        (address claimant,, uint256 storedThreshold, uint256 storedTimestamp, bool resolved,, bytes32 assertionId) =
+            poe.claims(claimId);
+
         assertEq(claimant, user);
         assertEq(storedThreshold, threshold);
         assertEq(storedTimestamp, timestamp);
@@ -42,17 +43,17 @@ contract PoeTest is Test {
         string memory team = "Lakers";
         uint256 threshold = 200;
         uint256 timestamp = block.timestamp;
-        oddsVerifier.submitClaim(team, threshold, timestamp);
+        poe.submitClaim(team, threshold, timestamp);
         vm.stopPrank();
-        
+
         bytes32 claimId = keccak256(abi.encode(user, team, threshold, timestamp));
-        
+
         // Mock UMA Oracle resolution
         MockUMAOracle(address(umaOracle)).setResult(true);
-        
-        vm.warp(block.timestamp + oddsVerifier.disputeWindow() + 1);
-        oddsVerifier.resolveClaim(claimId);
-        (,,,,bool resolved,,) = oddsVerifier.claims(claimId);
+
+        vm.warp(block.timestamp + poe.disputeWindow() + 1);
+        poe.resolveClaim(claimId);
+        (,,,, bool resolved,,) = poe.claims(claimId);
         assertTrue(resolved);
     }
 }
