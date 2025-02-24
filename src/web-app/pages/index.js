@@ -136,7 +136,7 @@ export default function Home() {
       setStatus(
         "Claim submitted successfully! Email recorded for notification."
       );
-      // Here you could send `email` to your backend if needed
+      // TODO: Send `email` to backend
     } catch (error) {
       console.error("Full error:", error);
       setStatus("Error submitting claim: " + error.message);
