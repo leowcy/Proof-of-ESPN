@@ -1,4 +1,7 @@
-export const poeABI = [
+import { ethers } from "ethers";
+
+// Replace with your actual contract ABI
+export const contractABI = [
   {
     type: "constructor",
     inputs: [
@@ -228,3 +231,23 @@ export const poeABI = [
     anonymous: false,
   },
 ];
+
+
+// Contract address from .env.local
+export const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+
+// Provider for Sepolia testnet
+export const getProvider = () => {
+  return new ethers.JsonRpcProvider(
+    `https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
+  );
+};
+
+// Get contract instance
+export const getContract = (signer) => {
+  return new ethers.Contract(
+    contractAddress,
+    contractABI,
+    signer || getProvider()
+  );
+};
